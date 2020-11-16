@@ -22,6 +22,7 @@ from email.mime.multipart import MIMEMultipart
 from email.parser import Parser
 import io
 import json
+import logging
 
 import requests
 import six
@@ -314,6 +315,7 @@ def _unpack_batch_response(response):
     message = _generate_faux_mime_message(parser, response)
 
     if not isinstance(message._payload, list):
+        logging.info("Returning Bad response for status code: {}, message: {}".format(response.status_code, message))
         raise ValueError("Bad response:  not multi-part")
 
     for subrequest in message._payload:
